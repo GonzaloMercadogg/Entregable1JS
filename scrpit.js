@@ -67,3 +67,5 @@ switch(marca) {
 recotizar = prompt("¿Desea realizar una nueva consulta?").toLowerCase()
 
 }while(recotizar!="no")
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+dsada
