@@ -1,6 +1,6 @@
 // Inicio del programa
 
-alert("Bienvenido a Todo Movil")
+// alert("Bienvenido a Todo Movil")
 
 /*const pedirDatosdeUsuario = () => {
     let nombre = "";
@@ -84,7 +84,7 @@ pedirDatosdeUsuario();*/
 
 //Se crea un objeto 
 
-const productos = [
+const BBDD = [
     {
         "id": 1,
         "nombre": "Samsung Galaxy S20",
@@ -213,7 +213,33 @@ const carrito = [];
 function renderizarProductos(){
 
     const tienda = document.getElementById('tienda');
-    console.log(tienda);
+
+    BBDD.forEach((p)=> {
+
+        let producto = document.createElement('div');
+        producto.classList.add('col-12');
+        producto.classList.add('col-md-4');
+        producto.classList.add('mb-5');
+        producto.classList.add('d-flex');
+        producto.classList.add('justify-content-center');
+
+        producto.innerHTML = `
+        <div class="card text-dark" style="width: 18rem;">
+            <img class="card-img-top" src="${p.img}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">${p.nombre}</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <p>${p.precio}€</p>
+                <button class="btn btn-primary" id="${p.id}">Añadir al carrito</button>
+            </div>
+        </div>
+        `
+        
+        tienda.appendChild(producto);
+
+    })
+    
+    
 }
 
 renderizarProductos();
