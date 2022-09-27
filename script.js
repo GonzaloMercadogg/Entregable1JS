@@ -213,7 +213,7 @@ function renderizarProductos(){
     const tienda = document.getElementById('tienda');
 
     const filtro = [
-        'Mas vendidos', 
+        'Mostrar stock total', 
         'Alfabeticamente', 
         'Mayor Precio',
         'Menor precio', 
