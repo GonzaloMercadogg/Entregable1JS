@@ -84,7 +84,7 @@ pedirDatosdeUsuario();*/
 
 //Se crea un objeto 
 
-const BBDD = [
+const stock = [
     {
         "id": 1,
         "nombre": "Samsung Galaxy S20",
@@ -206,40 +206,146 @@ const BBDD = [
         "cantidad": 10
     },
 
-]
-
-const carrito = [];
+];
 
 function renderizarProductos(){
 
     const tienda = document.getElementById('tienda');
 
-    BBDD.forEach((p)=> {
+    const filtro = [
+        'Alfabeticamente', 
+        'Mas vendidos', 
+        'Mayor Precio',
+        'Menor precio', 
+    ];
 
-        let producto = document.createElement('div');
+    const divContainer = document.createElement('div');
+    divContainer.classList.add('container', 'text-center');
+
+    filtro.forEach((btn)=> {
+        
+        const boton = document.createElement('button');
+        boton.textContent = btn;
+        boton.classList.add('btn', 'btn-danger', 'm-2');
+
+        tienda.appendChild(boton);
+    });
+
+    const mayorPrecio = document.querySelector('button');
+    mayorPrecio.addEventListener('click', () =>{
+
+        const product = stock.sort((a,b) => b.precio - a.precio);
+
+        console.log(product);
+        
+        tienda.innerHTML = '';
+
+        product.forEach((c)=>{
+            
+            console.log(c);
+            const div = document.createElement('div');
+
+            div.classList.add('col-12');
+            div.classList.add('col-md-4');
+            div.classList.add('mb-5');
+            div.classList.add('d-flex');
+            div.classList.add('justify-content-center');
+
+            div.innerHTML = `
+            <div class="card text-dark" style="width: 18rem;">
+            <img class="card-img-top" src="${c.img}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">${c.nombre}</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <p>${c.precio}€</p>
+                <button class="btn btn-primary" id="${c.id}">Añadir al carrito</button>
+            </div>
+            </div>
+        `
+
+            div.querySelector('button').addEventListener('click', ()=>{
+                agregarProductosAlCarrito(c.id);
+            
+            })
+
+            tienda.appendChild(div);
+        })
+    })
+
+
+    stock.forEach((p)=> {
+
+        const producto = document.createElement('div');
         producto.classList.add('col-12');
         producto.classList.add('col-md-4');
         producto.classList.add('mb-5');
         producto.classList.add('d-flex');
         producto.classList.add('justify-content-center');
 
-        producto.innerHTML = `
+        producto.innerHTML += `
         <div class="card text-dark" style="width: 18rem;">
             <img class="card-img-top" src="${p.img}" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">${p.nombre}</h5>
                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                 <p>${p.precio}€</p>
-                <button class="btn btn-primary" id="${p.id}">Añadir al carrito</button>
+                <button class="btn btn-danger" id="${p.id}">Añadir al carrito</button>
             </div>
         </div>
         `
         
         tienda.appendChild(producto);
-
+        
     })
     
     
 }
 
+const carrito = [];
+
 renderizarProductos();
+
+function agregarProductosAlCarrito(id){
+    
+    let producto = stock.find(producto => producto.id === id);
+
+    let añadirCarrito = carrito.find(producto => producto.id === id);
+
+    if(añadirCarrito){
+        
+        añadirCarrito.cantidad++;
+
+        console.log(carrito);
+
+        alert(`La cantidad del producto ${producto.nombre} fue modificada`);
+
+    }else {
+        
+        producto.cantidad = 1;
+
+        carrito.push(producto);
+
+        console.log(carrito);
+
+        alert('Producto agregado correctamente al carrito')
+    }
+
+    precioTotal();
+}
+
+function precioTotal(){
+
+    let total = 0;
+
+    carrito.forEach((p)=>{
+    
+        total += p.precio * p.cantidad;
+    })
+
+    console.log(total);
+
+    const t = document.getElementById('total');
+
+    t.innerHTML = `<h5>${total}€</h5>`
+
+}
